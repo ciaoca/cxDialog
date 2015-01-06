@@ -91,7 +91,6 @@
 		var _this = this;
 
 		_this.dom.docHtml = $('html');
-		_this.dom.docBody = $('body');
 		_this.dom.box = $('<div></div>', {'id': 'cxdialog', 'class': 'cxdialog'});
 		_this.dom.overlay = $('<div></div>', {'id': 'cxdialog_overlay', 'class': 'cxdialog_overlay'});
 		_this.dom.holder = $('<div></div>', {'id': 'cxdialog_holder', 'class': 'cxdialog_holder'});
@@ -239,14 +238,14 @@
 	// 显示对话框
 	dialog.show = function(opt){
 		var _this = this;
-		_this.dom.docBody.append(_this.dom.box);
+		_this.dom.box.appendTo('body');
 
 		if (opt.lockScroll === true) {
 			_this.dom.docHtml.addClass('cxdialog_lock');
 		};
 
 		if (typeof opt.background && opt.background.length) {
-			_this.dom.overlay.css('background', opt.background).appendTo(_this.dom.docBody).css('display', 'block');
+			_this.dom.overlay.css('background', opt.background).appendTo('body').css('display', 'block');
 		};
 
 		_this.dom.box.css('display', 'block');
@@ -314,12 +313,14 @@
 		_this.dom.docHtml.removeClass('cxdialog_lock');
 	};
 
-	$(function(){
-		dialog.init();
-	});
+	dialog.init();
 
 	$.cxDialog = function(){
 		dialog.format.apply(dialog, arguments);
+	};
+
+	$.cxDialog.close = function(){
+		dialog.exit.apply(dialog);
 	};
 
 	$.cxDialog.defaults = {
@@ -336,9 +337,5 @@
 		background: '',
 		width: 0,
 		height: 0
-	};
-
-	$.cxDialog.close = function(){
-		dialog.exit.apply(dialog);
 	};
 }));
