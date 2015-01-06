@@ -1,39 +1,73 @@
 /*!
- * jQuery cxDialog 1.2
+ * jQuery cxDialog 1.2.1
  * http://code.ciaoca.com/
  * https://github.com/ciaoca/cxDialog
  * E-mail: ciaoca@gmail.com
  * Released under the MIT license
- * Date: 2014-12-30
+ * Date: 2014-01-06
  *
  * 简易调用：$.cxDialog(string, [ok, no])
  * 完整方法：$.cxDialog(opt)
  * @param {object|string} opt 参数设置 or 内容
- *    title {string} 标题
- *    info {string|dom} 内容
- *    ok {fn} 点击确认时的回调函数
- *    okText {string} 确认按钮文字
- *    no {fn} 点击取消时的回调函数
- *    noText {string} 取消按钮文字
- *    buttons {array} 自定义按钮：[{text: 'text', callback: fn}, ...]
- *    closeBtn {boolean} 是否显示关闭按钮
- *    lockScroll {boolean} 是否锁定滚动
- *    baseClass {string} 给对话框容器增加 class，不会覆盖默认的 class
- *    background {string} 遮罩背景的颜色，留空表示不需要遮罩
- *    width {int} 提示框固定宽度
- *    height {int} 提示框固定高度
- *    zIndex {int} 提示框的层级
+ *   title {string} 标题
+ *   info {string|dom} 内容
+ *   ok {fn} 点击确认时的回调函数
+ *   okText {string} 确认按钮文字
+ *   no {fn} 点击取消时的回调函数
+ *   noText {string} 取消按钮文字
+ *   buttons {array} 自定义按钮：[{text: 'text', callback: fn}, ...]
+ *   closeBtn {boolean} 是否显示关闭按钮
+ *   lockScroll {boolean} 是否锁定滚动
+ *   baseClass {string} 给对话框容器增加 class，不会覆盖默认的 class
+ *   background {string} 遮罩背景的颜色，留空表示不需要遮罩
+ *   width {int} 提示框固定宽度
+ *   height {int} 提示框固定高度
+ *   zIndex {int} 提示框的层级
  *
  * @param {function} ok 点击确认时的回调函数
  * @param {function} no 点击取消时的回调函数
  */
 (function(factory){
-    if (typeof define === 'function' && define.amd) {
-        define(['jquery'], factory);
-    } else {
-        factory(jQuery);
-    };
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else {
+		factory(jQuery);
+	};
 }(function($){
+	if (typeof Zepto === 'function' || typeof Zepto === 'object') {
+		// Add inner and outer width to zepto (adapted from https://gist.github.com/alanhogan/3935463)
+		var ioDim = function(dimension, includeBorder) {
+			return function (includeMargin) {
+				var sides, size, elem;
+				if (this) {
+					elem = this;
+					size = elem[dimension]();
+					sides = {
+						width: ['left', 'right'],
+						height: ['top', 'bottom']
+					};
+					sides[dimension].forEach(function(side) {
+						size += parseInt(elem.css('padding-' + side), 10);
+						if (includeBorder) {
+							size += parseInt(elem.css('border-' + side + '-width'), 10);
+						};
+						if (includeMargin) {
+							size += parseInt(elem.css('margin-' + side), 10);
+						};
+					});
+					return size;
+				} else {
+					return null;
+				};
+			};
+		};
+		['width', 'height'].forEach(function(dimension) {
+			var Dimension = dimension.substr(0,1).toUpperCase() + dimension.substr(1);
+			Zepto.fn['inner' + Dimension] = ioDim(dimension, false);
+			Zepto.fn['outer' + Dimension] = ioDim(dimension, true);
+		});
+	};
+
 	var isIE6 = !!window.ActiveXObject && !window.XMLHttpRequest;
 
 	var dialog = {
@@ -212,11 +246,13 @@
 		};
 
 		if (typeof opt.background && opt.background.length) {
-			_this.dom.overlay.css('background', opt.background).appendTo(_this.dom.docBody).show();
+			_this.dom.overlay.css('background', opt.background).appendTo(_this.dom.docBody).css('display', 'block');
 		};
-		
+
+		_this.dom.box.css('display', 'block');
+
 		var _cssAttr = {};
-		
+
 		// IE6 不支持 fixed，设置当前位置
 		if (isIE6) {
 			_cssAttr.top = document.documentElement.scrollTop + window.screen.availHeight / 4;
@@ -240,11 +276,13 @@
 			_cssAttr.zIndex = opt.zIndex;
 		};
 
+
 		if (typeof opt.baseClass === 'string' && opt.baseClass.length) {
 			_this.dom.box.addClass(opt.baseClass);
 		};
 
-		_this.dom.box.css(_cssAttr).fadeIn(300);
+		_this.dom.box.css(_cssAttr);
+
 	};
 
 	// 归还加载的 DOM
@@ -276,7 +314,9 @@
 		_this.dom.docHtml.removeClass('cxdialog_lock');
 	};
 
-	dialog.init();
+	$(function(){
+		dialog.init();
+	});
 
 	$.cxDialog = function(){
 		dialog.format.apply(dialog, arguments);
