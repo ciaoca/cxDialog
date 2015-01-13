@@ -4,7 +4,7 @@
  * https://github.com/ciaoca/cxDialog
  * E-mail: ciaoca@gmail.com
  * Released under the MIT license
- * Date: 2014-01-06
+ * Date: 2015-01-13
  *
  * 简易调用：$.cxDialog(string, [ok, no])
  * 完整方法：$.cxDialog(opt)
@@ -31,7 +31,7 @@
 	if (typeof define === 'function' && define.amd) {
 		define(['jquery'], factory);
 	} else {
-		factory(jQuery);
+    factory(window.jQuery || window.Zepto || window.$);
 	};
 }(function($){
 	if (typeof Zepto === 'function' || typeof Zepto === 'object') {
@@ -190,6 +190,10 @@
 			}).insertAfter(_this.infoCache);
 
 			_this.infoCache.show().appendTo(_this.dom.box);
+
+		} else {
+      opt.info = String(opt.info);
+      _this.dom.info.html(opt.info).appendTo(_this.dom.box);
 		};
 
 		// 设置按钮
@@ -250,6 +254,10 @@
 
 		_this.dom.box.css('display', 'block');
 
+		if (typeof opt.baseClass === 'string' && opt.baseClass.length) {
+			_this.dom.box.addClass(opt.baseClass);
+		};
+
 		var _cssAttr = {};
 
 		// IE6 不支持 fixed，设置当前位置
@@ -273,11 +281,6 @@
 
 		if (opt.zIndex > 0) {
 			_cssAttr.zIndex = opt.zIndex;
-		};
-
-
-		if (typeof opt.baseClass === 'string' && opt.baseClass.length) {
-			_this.dom.box.addClass(opt.baseClass);
 		};
 
 		_this.dom.box.css(_cssAttr);

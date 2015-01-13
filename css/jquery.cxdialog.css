@@ -1,7 +1,7 @@
 /**
  * cxDialog
  * ------------------------------ */
-.cxdialog{position:fixed;top:35%;left:50%;overflow:hidden;min-width:240px;max-width:90%;margin:0;padding:0;border:none;border-radius:5px;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,0.6);color:#333;font-family:Arial,'\5fae\8f6f\96c5\9ed1';z-index:10002;
+.cxdialog{position:fixed;top:40%;left:50%;overflow:hidden;min-width:240px;max-width:90%;margin:0;padding:0;border:none;border-radius:5px;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,0.6);color:#333;font-family:Arial,'\5fae\8f6f\96c5\9ed1';z-index:10002;
 _position:absolute;
 _width:360px;
 _height:140px;
@@ -20,28 +20,28 @@ _height:140px;
 .cxdialog_btns a + a{margin-left:10px;}
 
 .cxdialog_overlay{display:none;overflow:hidden;position:fixed;top:0;left:0;width:100%;height:100%;z-index:10001;
-filter:alpha(opacity=60);
-opacity:0.6;
+filter:alpha(opacity=40);
+opacity:0.4;
 _position:absolute;
 }
 .cxdialog_lock{overflow:hidden !important;width:auto;}
 
 /* iOS Theme */
-.cxdialog.ios{min-height:inherit;background:#fff;}
+.cxdialog.ios{min-width:270px;min-height:inherit;border-radius:6px;background:#e9e9e9;box-shadow:none;}
 .cxdialog.ios > a[rev="close"]{display:none;}
-.cxdialog.ios .cxdialog_title{padding:10px 10px 0 10px;border:none;background:none;font-size:14px;line-height:1.5;text-align:center;}
-.cxdialog.ios .cxdialog_info{min-height:inherit;padding:10px;border:none;background:none;font-size:12px;text-align:center;}
+.cxdialog.ios .cxdialog_title{padding:16px 10px 0 10px;border:none;background:none;font-size:18px;line-height:1.5;text-align:center;text-indent:0;}
+.cxdialog.ios .cxdialog_info{min-height:inherit;padding:4px 10px 14px 10px;border:none;background:none;font-size:14px;text-align:center;}
 .cxdialog.ios .cxdialog_title + .cxdialog_info{margin-top:2px;padding-top:0;}
-.cxdialog.ios .cxdialog_btns{overflow:hidden;padding:0;border-top:1px solid #ddd;text-align:center;}
-.cxdialog.ios .cxdialog_btns a{clear:both;display:block;margin:0;padding:0;border:none;border-radius:0;background:none;color:#007aff;font-weight:bold;font-size:14px;line-height:40px;text-decoration:none;cursor:pointer;}
-.cxdialog.ios .cxdialog_btns a:hover{background:#f0f0f0;}
+.cxdialog.ios .cxdialog_btns{overflow:hidden;padding:0;border-top:1px solid #d4d4d4;text-align:center;}
+.cxdialog.ios .cxdialog_btns a{clear:both;display:block;margin:0;padding:0;border:none;border-radius:0;background:none;color:#007aff;font-weight:bold;font-size:17px;line-height:44px;text-decoration:none;cursor:pointer;}
+.cxdialog.ios .cxdialog_btns a:hover{background:#d9d9d9;}
 .cxdialog.ios .cxdialog_btns a.btn_ok,
 .cxdialog.ios .cxdialog_btns a.btn_no{clear:none;float:left;width:50%;border:none;}
 .cxdialog.ios .cxdialog_btns a.btn_ok{float:right;}
-.cxdialog.ios .cxdialog_btns a.btn_ok:before{content:'';position:absolute;top:0;left:0;width:1px;height:100%;background:#ddd;}
+.cxdialog.ios .cxdialog_btns a.btn_ok:before{content:'';position:absolute;top:0;left:0;width:1px;height:100%;background:#d4d4d4;}
 .cxdialog.ios .cxdialog_btns a.btn_ok:only-child,
 .cxdialog.ios .cxdialog_btns a.btn_no:only-child{float:none;width:100%;}
-.cxdialog.ios .cxdialog_btns a + a{border-top:1px solid #ddd;}
+.cxdialog.ios .cxdialog_btns a + a{border-top:1px solid #d4d4d4;}
 
 /* Black Theme */
 .cxdialog.black{padding:0;border:none;background:#333;color:#fff;}
