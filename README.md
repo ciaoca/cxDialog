@@ -1,10 +1,10 @@
-#jQuery cxDialog
+#cxDialog
 
-cxDialog 是基于 jQuery 的对话框插件，支持自定义外观样式。
+cxDialog 是基于 jQuery 的对话框插件，支持自定义外观样式，同时兼容 Zepto，方便在移动端使用。
 
 **版本：**
-* jQuery v1.7+
-* jQuery cxDialog v1.2.1
+* jQuery v1.7+ || Zepto 1.0+
+* cxDialog v1.2.1
 
 \* 兼容 Zepto，需要 [data 模块支持](https://github.com/madrobby/zepto/blob/master/src/data.js)
 
