@@ -29,9 +29,9 @@ cxDialog 是基于 jQuery 的对话框插件，支持自定义外观样式，同
 $.cxDialog('内容');
 
 $.cxDialog('内容', function(){
-    // click ok callback
+  // click ok callback
 }, function(){
-    // click no callback
+  // click no callback
 });
 
 $.cxDialog({
