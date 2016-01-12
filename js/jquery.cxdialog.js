@@ -4,7 +4,7 @@
  * https://github.com/ciaoca/cxDialog
  * E-mail: ciaoca@gmail.com
  * Released under the MIT license
- * Date: 2016-01-11
+ * Date: 2016-01-12
  *
  * 简易调用：$.cxDialog(string[, ok, no])
  * 完整方法：$.cxDialog(opt)
@@ -98,7 +98,9 @@
     self.dom.btns = $('<div></div>', {'class': 'cxdialog_btns'});
     self.dom.closeBtn = $('<a></a>', {'rel': 'cxdialog', 'rev': 'close'});
 
-    self.dom.box.appendTo('body').after(self.dom.overlay);
+    $(function() {
+      self.dom.box.appendTo('body').after(self.dom.overlay);
+    });
 
     self.isIE6 = !!window.ActiveXObject && !window.XMLHttpRequest;
 
@@ -250,7 +252,6 @@
       self.dom.docHtml.addClass('cxdialog_lock');
     };
 
-    // var _background = (typeof opt.background === 'string' && opt.background.length) ? opt.background : '';
     if (typeof opt.background === 'string') {
       self.dom.overlay.css('background', opt.background);
     } else {
