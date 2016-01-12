@@ -42,12 +42,12 @@ _position:absolute;
 @-webkit-keyframes cxDialogIosOut{
 0%{top:35%;opacity:1;-webkit-transform:scale(1);}
 99%{top:35%;opacity:0;-webkit-transform:scale(0.9);}
-100%{top:-100%;}
+100%{top:-100%;opacity:0;}
 }
 @keyframes cxDialogIosOut{
 0%{top:35%;opacity:1;transform:scale(1);}
 99%{top:35%;opacity:0;transform:scale(0.9);}
-100%{top:-100%;}
+100%{top:-100%;opacity:0;}
 }
 
 .cxdialog.ios{min-width:270px;border-radius:6px;background:#f9f9f9;box-shadow:none;}

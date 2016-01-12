@@ -262,8 +262,6 @@
       self.dom.box.addClass(opt.baseClass);
     };
 
-    self.dom.box.addClass('in');
-
     var _cssAttr = {};
 
     // IE6 不支持 fixed，设置当前位置
@@ -289,7 +287,7 @@
       _cssAttr.zIndex = opt.zIndex;
     };
 
-    self.dom.box.css(_cssAttr);
+    self.dom.box.css(_cssAttr).addClass('in');
   };
 
   // 归还加载的 DOM
