@@ -2,21 +2,22 @@
  * cxDialog
  * ------------------------------ */
 .cxdialog{position:fixed;top:-100%;left:50%;overflow:hidden;min-width:240px;max-width:90%;margin:0;padding:0;border:none;border-radius:5px;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,0.6);color:#333;font-family:Arial,'\5fae\8f6f\96c5\9ed1';z-index:10002;
+*border:1px solid #ddd;
 _position:absolute;
 _width:360px;
 _height:140px;
 }
-.cxdialog.in{top:35%;}
+.cxdialog.in{top:40%;}
 .cxdialog > a[rev="close"]{position:absolute;top:0;right:0;width:30px;height:30px;color:#e9573f;font:bold 18px/30px Tahoma;text-align:center;text-decoration:none;cursor:pointer;
 *font-size:12px;
 }
 .cxdialog > a[rev="close"]:before{content:"×";}
 .cxdialog > a[rev="close"]:hover{color:#fc6e51;}
 
-.cxdialog_title{background:#ddd;color:#333;font-weight:bold;font-size:14px;line-height:30px;text-indent:10px;}
-.cxdialog_info{overflow:hidden;min-height:40px;padding:10px;font-size:14px;line-height:1.6;}
-.cxdialog_btns{overflow:hidden;padding:10px;border-top:1px solid #ddd;text-align:right;}
-.cxdialog_btns a{display:inline-block;position:relative;padding:0 1em;border:none;border-radius:3px;background:#aaa;color:#fff;font-weight:bold;font-size:14px;line-height:28px;text-decoration:none;cursor:pointer;}
+.cxdialog_title{position:relative;background:#ddd;color:#333;font-weight:bold;font-size:14px;line-height:30px;text-indent:10px;}
+.cxdialog_info{overflow:hidden;position:relative;min-height:40px;padding:10px;font-size:14px;line-height:1.6;}
+.cxdialog_btns{overflow:hidden;position:relative;padding:10px;border-top:1px solid #ddd;font-weight:bold;font-size:14px;line-height:28px;text-align:right;}
+.cxdialog_btns a{display:inline-block;position:relative;padding:0 1em;border:none;border-radius:3px;background:#aaa;color:#fff;text-decoration:none;cursor:pointer;}
 .cxdialog_btns a:hover{background:#999;}
 .cxdialog_btns a + a{margin-left:10px;}
 
@@ -49,22 +50,22 @@ _position:absolute;
 100%{top:-100%;}
 }
 
-.cxdialog.ios{background:#fff;}
+.cxdialog.ios{min-width:270px;border-radius:6px;background:#f9f9f9;box-shadow:none;}
 .cxdialog.ios > a[rev="close"]{display:none;}
-.cxdialog.ios .cxdialog_title{padding:10px 10px 0 10px;border:none;background:none;font-size:14px;line-height:1.5;text-align:center;}
-.cxdialog.ios .cxdialog_info{padding:10px;border:none;background:none;font-size:12px;text-align:center;}
+.cxdialog.ios .cxdialog_title{padding:16px 10px 0 10px;background:none;font-size:16px;line-height:1.5;text-align:center;}
+.cxdialog.ios .cxdialog_info{min-height:inherit;margin:0 0 10px 0;padding:10px 10px 0;font-size:14px;text-align:center;}
 .cxdialog.ios .cxdialog_title + .cxdialog_info{margin-top:2px;padding-top:0;}
-.cxdialog.ios .cxdialog_btns{overflow:hidden;padding:0;border-top:1px solid #ddd;text-align:center;}
-.cxdialog.ios .cxdialog_btns a{clear:both;display:block;margin:0;padding:0;border:none;border-radius:0;background:none;color:#007aff;font-weight:bold;font-size:14px;line-height:40px;text-decoration:none;cursor:pointer;}
-.cxdialog.ios .cxdialog_btns a:hover{background:#f0f0f0;}
+.cxdialog.ios .cxdialog_btns{overflow:hidden;margin:10px 0 0 0;padding:0;border-top:1px solid #ddd;font-size:16px;line-height:44px;text-align:center;}
+.cxdialog.ios .cxdialog_btns a{clear:both;display:block;margin:0;padding:0;border:none;border-radius:0;background:none;color:#007aff;cursor:pointer;}
+.cxdialog.ios .cxdialog_btns a:hover{background:#e9e9e9;}
 .cxdialog.ios .cxdialog_btns a.btn_ok,
 .cxdialog.ios .cxdialog_btns a.btn_no{clear:none;float:left;width:50%;border:none;}
 .cxdialog.ios .cxdialog_btns a.btn_ok{float:right;}
-.cxdialog.ios .cxdialog_btns a.btn_ok:before{content:'';position:absolute;top:0;left:0;width:1px;height:100%;background:#ddd;}
+.cxdialog.ios .cxdialog_btns a.btn_ok:before{content:'';position:absolute;top:0;left:0;width:1px;height:100%;background:#d4d4d4;}
 .cxdialog.ios .cxdialog_btns a.btn_ok:only-child,
 .cxdialog.ios .cxdialog_btns a.btn_no:only-child{float:none;width:100%;}
-.cxdialog.ios .cxdialog_btns a + a{border-top:1px solid #ddd;}
-.cxdialog.ios + .cxdialog_overlay{background-color:rgba(0,0,0,0.4);opacity:0;
+.cxdialog.ios .cxdialog_btns a + a{border-top:1px solid #d4d4d4;}
+.cxdialog.ios + .cxdialog_overlay{background:rgba(0,0,0,0.4);opacity:0;
 transition:top 0s, opacity 0.2s;
 }
 
@@ -82,10 +83,10 @@ transition:top 0s 0.2s, opacity 0.2s;
 }
 
 /* Black Theme */
-.cxdialog.black{padding:0;border:none;background:#333;color:#fff;}
+.cxdialog.black{background:#333;color:#fff;}
 .cxdialog.black > a[rev="close"]{color:#666;}
 .cxdialog.black > a[rev="close"]:hover{color:#333;}
-.cxdialog.black .cxdialog_title{position:relative;border-bottom:1px solid #000;color:#333;
+.cxdialog.black .cxdialog_title{border-bottom:1px solid #000;color:#333;
 background:rgba(194,194,194,1);
 background:-moz-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
 background:-webkit-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
@@ -95,10 +96,9 @@ background:linear-gradient(to bottom, rgba(194,194,194,1) 0%, rgba(150,150,150,1
 }
 .cxdialog.black .cxdialog_title:before{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:#fff;}
 .cxdialog.black .cxdialog_title:after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:1px;background:#555;}
-.cxdialog.black .cxdialog_info{border:none;background:none;font-size:12px;text-align:left;}
-.cxdialog.black .cxdialog_btns{position:relative;border-top:1px solid #000;text-align:left;}
+.cxdialog.black .cxdialog_btns{border-top:1px solid #000;line-height:28px;text-align:left;}
 .cxdialog.black .cxdialog_btns:before{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:#555;}
-.cxdialog.black .cxdialog_btns a{border:1px solid #000;box-shadow:0 1px 0 #555;color:#333;line-height:28px;
+.cxdialog.black .cxdialog_btns a{border:1px solid #000;box-shadow:0 1px 0 #555;color:#333;
 background:rgba(194,194,194,1);
 background:-moz-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
 background:-webkit-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
@@ -107,4 +107,4 @@ background:-ms-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 
 background:linear-gradient(to bottom, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
 }
 .cxdialog.black .cxdialog_btns a:hover{background:#c2c2c2;}
-.cxdialog.black + .cxdialog_overlay{background-color:rgba(0,0,0,0.4);opacity:1;}
+.cxdialog.black + .cxdialog_overlay{background:rgba(0,0,0,0.4);opacity:1;}
