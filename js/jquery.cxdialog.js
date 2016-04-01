@@ -1,10 +1,10 @@
 /*!
- * jQuery cxDialog 1.2.2
+ * jQuery cxDialog 1.2.3
  * http://code.ciaoca.com/
  * https://github.com/ciaoca/cxDialog
  * E-mail: ciaoca@gmail.com
  * Released under the MIT license
- * Date: 2016-01-12
+ * Date: 2016-03-24
  *
  * 简易调用：$.cxDialog(string[, ok, no])
  * 完整方法：$.cxDialog(opt)
@@ -47,9 +47,11 @@
             height: ['top', 'bottom']
           };
           sides[dimension].forEach(function(side) {
-            size += parseInt(elem.css('padding-' + side), 10);
-            if (includeBorder) {
-              size += parseInt(elem.css('border-' + side + '-width'), 10);
+            if (!elem.css('box-sizing') || elem.css('box-sizing') === 'content-box') {
+              size += parseInt(elem.css('padding-' + side), 10);
+              if (includeBorder) {
+                size += parseInt(elem.css('border-' + side + '-width'), 10);
+              };
             };
             if (includeMargin) {
               size += parseInt(elem.css('margin-' + side), 10);
@@ -63,11 +65,14 @@
     };
     ['width', 'height'].forEach(function(dimension) {
       var Dimension = dimension.substr(0,1).toUpperCase() + dimension.substr(1);
-      Zepto.fn['inner' + Dimension] = ioDim(dimension, false);
-      Zepto.fn['outer' + Dimension] = ioDim(dimension, true);
+      if (typeof Zepto.fn['inner' + Dimension] === 'undefined') {
+        Zepto.fn['inner' + Dimension] = ioDim(dimension, false);
+      };
+      if (typeof Zepto.fn['outer' + Dimension] === 'undefined') {
+        Zepto.fn['outer' + Dimension] = ioDim(dimension, true);
+      };
     });
   };
-
 
   var dialog = {
     dom: {},
@@ -98,7 +103,7 @@
     self.dom.btns = $('<div></div>', {'class': 'cxdialog_btns'});
     self.dom.closeBtn = $('<a></a>', {'rel': 'cxdialog', 'rev': 'close'});
 
-    $(function() {
+    $(document).ready(function() {
       self.dom.box.appendTo('body').after(self.dom.overlay);
     });
 
@@ -168,33 +173,35 @@
       self.dom.title.html(opt.title).appendTo(self.dom.box);
     };
 
-    // 设置文本内容
     self.infoCache = undefined;
 
+    // 设置文本内容
     if (typeof opt.info === 'string' && opt.info.length) {
       self.dom.info.html(opt.info).appendTo(self.dom.box);
 
     // 设置内容为 DOM 元素或 jQuery 对象
     } else if (self.isElement(opt.info) || self.isJquery(opt.info) || self.isZepto(opt.info)) {
-      self.infoCache = self.isElement(opt.info) ? $(opt.info) : opt.info
+      var _cacheDom = self.isElement(opt.info) ? $(opt.info) : opt.info;
+      self.infoCache = {
+        dom: _cacheDom
+      };
 
-      var _cssFloat = self.infoCache.css('float');
-      var _cssDisplay = self.infoCache.css('display');
-      var _cssVisibility = self.infoCache.css('visibility');
+      var _style = _cacheDom.attr('style');
+
+      if (typeof _style === 'string' && _style.length) {
+        self.infoCache.styleText = _style;
+      };
 
       self.dom.holder.css({
-        'float': _cssFloat,
-        'display': _cssDisplay,
-        'visibility': _cssVisibility,
-        'width': self.infoCache.outerWidth(),
-        'height': self.infoCache.outerHeight()
-      }).data({
-        'float': _cssFloat,
-        'display': _cssDisplay,
-        'visibility': _cssVisibility
-      }).insertAfter(self.infoCache);
+        'float': _cacheDom.css('float'),
+        'display': _cacheDom.css('display'),
+        'visibility': _cacheDom.css('visibility'),
+        'position': _cacheDom.css('position'),
+        'width': _cacheDom.outerWidth(),
+        'height': _cacheDom.outerHeight()
+      }).insertAfter(_cacheDom);
 
-      self.infoCache.css('display', 'block').appendTo(self.dom.box);
+      _cacheDom.css('display', 'block').appendTo(self.dom.box);
 
     } else {
       opt.info = String(opt.info);
@@ -294,15 +301,19 @@
   dialog.backDom = function(){
     var self = this;
 
-    if (self.isJquery(self.infoCache) || self.isZepto(self.infoCache)) {
-      self.infoCache.css({
-        'float': '',
-        'display': '',
-        'visibility': ''
-      }).insertAfter(self.dom.holder);
+    if (self.infoCache && (self.isJquery(self.infoCache.dom) || self.isZepto(self.infoCache.dom))) {
+      if (typeof self.infoCache.styleText === 'string' && self.infoCache.styleText.length) {
+        self.infoCache.dom.attr('style', self.infoCache.styleText);
+      } else {
+        self.infoCache.dom.removeAttr('style');
+      };
+
+      self.infoCache.dom.insertAfter(self.dom.holder);
 
       self.dom.holder.remove();
     };
+
+    self.infoCache = undefined;
   };
 
   // 关闭对话框
@@ -311,7 +322,6 @@
 
     self.backDom();
 
-    self.infoCache = undefined;
     self.btnCache = undefined;
 
     self.dom.box.removeClass('in').addClass('out');

@@ -13,6 +13,7 @@ fieldset{margin:2em 0;}
 fieldset legend{font-weight:bold;font-size:16px;line-height:2;}
 fieldset a{color:#06f;text-decoration:none;}
 fieldset a.n{color:#090;}
+fieldset a + a{margin-left:1em;}
 
 .wrap{width:800px;margin:0 auto;padding:20px 40px;border-radius:8px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,0.5);}
 
@@ -27,27 +28,26 @@ fieldset a.n{color:#090;}
   <h2>示例</h2>
   <div id="example">
     <fieldset>
-      <legend>背景遮罩控制</legend>
+      <legend>模拟 alert</legend>
+      <button type="button" name="alert">显示对话框</button>
+      <button type="button" name="confirm">模拟 confirm</button>
+      <button type="button" name="prompt">模拟 prompt</button>
+      <p id="result_confirm"></p>
+      <p id="result_prompt"></p>
+    </fieldset>
+
+    <fieldset>
+      <legend>背景遮罩设置</legend>
       <a class="n" href="javascript://" rel="background" rev="">不显示</a>
       <a href="javascript://" rel="background" rev='#000'>黑色背景</a>
       <a href="javascript://" rel="background" rev="#fff">白色背景</a>
     </fieldset>
 
     <fieldset>
-      <legend>模拟 alert</legend>
-      <a href="javascript://" rel="alert">显示对话框</a>
-    </fieldset>
-
-    <fieldset>
-      <legend>模拟 confirm</legend>
-      <a href="javascript://" rel="confirm">显示对话框</a>
-      <p id="result_confirm"></p>
-    </fieldset>
-
-    <fieldset>
-      <legend>模拟 prompt</legend>
-      <a href="javascript://" rel="prompt">显示对话框</a>
-      <p id="result_prompt"></p>
+      <legend>主题样式</legend>
+      <a class="n" href="javascript://" rel="theme" rev="">默认</a>
+      <a href="javascript://" rel="theme" rev='ios'>iOS</a>
+      <a href="javascript://" rel="theme" rev="black">黑色</a>
     </fieldset>
   </div>
 
@@ -61,7 +61,7 @@ fieldset a.n{color:#090;}
   <h2>文档</h2>
   <ul>
     <li><a target="_blank" href="https://github.com/ciaoca/cxDialog">Github</a></li>
-    <li><a target="_blank" href="http://code.ciaoca.com/jquery/cxdialog/">中文文档</a></li>
+    <li><a target="_blank" href="http://code.ciaoca.com/jquery/cxDialog/">中文文档</a></li>
   </ul>
   
   <h2>作者</h2>
@@ -70,7 +70,8 @@ fieldset a.n{color:#090;}
 </div>
 
 <script src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>
-<script src="js/jquery.cxdialog.min.js"></script>
+<!-- <script src="http://cdn.staticfile.org/zepto/1.0/zepto.min.js"></script> -->
+<script src="js/jquery.cxdialog.js"></script>
 <script>
 (function() {
   var promptName = document.getElementById('prompt_name');
@@ -79,10 +80,33 @@ fieldset a.n{color:#090;}
     var _rel = this.rel;
     var _rev = this.rev;
 
-    if (_rel === 'alert') {
-      $.cxDialog('<p>Hello World!</p><p>I am cxDialog!</p>');
+    if (_rel === 'background') {
+      $.cxDialog.defaults.background = _rev;
+      $(this).addClass('n').siblings('a').removeClass('n');
+      return false;
 
-    } else if (_rel === 'confirm') {
+    } else if (_rel === 'theme') {
+      $.cxDialog.defaults.baseClass = _rev;
+
+      if (_rev === 'ios') {
+        $.cxDialog.defaults.ok = function() {};
+      } else {
+        $.cxDialog.defaults.ok = undefined;
+      };
+
+      $(this).addClass('n').siblings('a').removeClass('n');
+    };
+
+  });
+
+  $('#example').on('click', 'button', function() {
+    var _name = this.name;
+
+    if (_name === 'alert') {
+      $.cxDialog('<p>Hello World!</p><p>I am cxDialog!</p>');
+      return false;
+
+    } else if (_name === 'confirm') {
       $.cxDialog({
         title: 'cxDialog',
         info: '现在开始使用 <strong>cxDialog</strong>！',
@@ -93,8 +117,9 @@ fieldset a.n{color:#090;}
           document.getElementById('result_confirm').innerHTML = '你选择了：<strong>取消</strong>';
         }
       });
+      return false;
 
-    } else if (_rel === 'prompt') {
+    } else if (_name === 'prompt') {
       $.cxDialog({
         title: 'cxDialog',
         info: document.getElementById('prompt_box'),
@@ -107,13 +132,9 @@ fieldset a.n{color:#090;}
         no: function(){}
       });
 
-    } else if (_rel === 'background') {
-      $.cxDialog.defaults.background = _rev;
-      $(this).addClass('n').siblings('a').removeClass('n');
-
+      return false;
     };
 
-    return false;
   });
 })();
 </script>
