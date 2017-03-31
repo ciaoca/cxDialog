@@ -1,10 +1,10 @@
 /*!
- * jQuery cxDialog 1.2.3
+ * jQuery cxDialog 1.2.4
  * http://code.ciaoca.com/
  * https://github.com/ciaoca/cxDialog
  * E-mail: ciaoca@gmail.com
  * Released under the MIT license
- * Date: 2016-03-24
+ * Date: 2017-01-06
  *
  * 简易调用：$.cxDialog(string[, ok, no])
  * 完整方法：$.cxDialog(opt)
@@ -268,6 +268,8 @@
     if (typeof opt.baseClass === 'string' && opt.baseClass.length) {
       self.dom.box.addClass(opt.baseClass);
     };
+
+    self.dom.box.removeAttr('style');
 
     var _cssAttr = {};
 
