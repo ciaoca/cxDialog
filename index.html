@@ -6,23 +6,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <link rel="stylesheet" href="css/jquery.cxdialog.css">
 <style>
-body{background:#eee;font:14px/1.7 tahoma,'\5fae\8f6f\96c5\9ed1',sans-serif;}
-h1,h2,h3{font-size:36px;line-height:1;}
-h2{font-size:24px;}
-h3{font-size:18px;}
-fieldset{margin:2em 0;border-color:#ccc;}
+body{margin:0;background-color:#f0f0f0;}
+h1,h2,h3{margin:1em 0;font-size:2.25rem;line-height:1;}
+h2{font-size:1.5rem;}
+h3{font-size:1.25rem;}
+
+a{color:#006af9;text-decoration:none;}
+
+.wrap{box-sizing:border-box;max-width:800px;margin:0 auto;}
+
+header{background-color:#2d2d2d;color:#fff;}
+header .wrap{padding:30px 0;}
+header h1{margin:0;}
+
+.main .wrap{padding:20px 40px;background-color:#fff;}
+fieldset{margin:1em 0;border-color:#ddd;}
 fieldset legend{color:#888;font-size:1rem;line-height:2;}
 
-.wrap{max-width:800px;margin:0 auto;padding:20px 40px;border-radius:5px;background-color:#fff;box-shadow:0 0 8px rgba(0,0,0,0.2);}
+.about{display:flex;}
+.about section{flex:1;}
+.about section h2{margin-bottom:0;}
+.about a:hover{opacity:0.8;}
 
 #prompt_box{display:none;margin:10px;padding:10px;border:2px solid #ccc;}
 #prompt_box label{display:block;margin-bottom:5px;}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>cxDialog 对话框</h1>
+<header>
+  <div class="wrap">
+    <h1>cxDialog 对话框</h1>
+  </div>
+</header>
 
+<div class="main">
+<div class="wrap">
   <h2>示例</h2>
   <form id="example" action="javascript://" method="get">
     <fieldset>
@@ -67,20 +85,25 @@ fieldset legend{color:#888;font-size:1rem;line-height:2;}
     <input id="prompt_name" type="text">
   </div>
 
-  <a href="http://code.ciaoca.com/jquery/cxdialog/demo/">查看更多示例</a>
-
-  <h2>文档</h2>
-  <p><a target="_blank" href="https://github.com/ciaoca/cxDialog">Github</a></p>
-  
-  <h2>作者</h2>
-  <p><a target="_blank" href="http://ciaoca.com/">Ciaoca</a></p>
-
-  <h2>协议</h2>
-  <p>Released under the MIT license</p>
+  <div class="about">
+    <section>
+      <h2>文档</h2>
+      <p><a target="_blank" href="https://github.com/ciaoca/cxDialog">Github</a></p>
+    </section>
+    <section>
+      <h2>作者</h2>
+      <p><a target="_blank" href="http://ciaoca.com/">Ciaoca</a></p>
+    </section>
+    <section>
+      <h2>协议</h2>
+      <p>Released under the MIT license</p>
+    </section>
+  </div>
+</div>
 </div>
 
-<!-- <script src="http://cdn.staticfile.org/jquery/1.9.0/jquery.min.js"></script> -->
-<script src="http://cdn.staticfile.org/zepto/1.1.1/zepto.min.js"></script>
+<!-- <script src="//cdn.staticfile.org/jquery/1.9.0/jquery.min.js"></script> -->
+<script src="//cdn.staticfile.org/zepto/1.1.1/zepto.min.js"></script>
 <script src="js/jquery.cxdialog.js"></script>
 <script>
 (function() {
