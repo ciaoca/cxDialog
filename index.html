@@ -10,6 +10,7 @@ body{margin:0;background-color:#f0f0f0;}
 h1,h2,h3{margin:1em 0;font-size:2.25rem;line-height:1;}
 h2{font-size:1.5rem;}
 h3{font-size:1.25rem;}
+input,select,button{padding:0.5em;}
 
 a{color:#006af9;text-decoration:none;}
 
@@ -40,66 +41,66 @@ fieldset legend{color:#888;font-size:1rem;line-height:2;}
 </header>
 
 <div class="main">
-<div class="wrap">
-  <h2>示例</h2>
-  <form id="example" action="javascript://" method="get">
-    <fieldset>
-      <legend>按钮</legend>
-      <label><input type="checkbox" name="btn" value="ok"> 确认</label>
-      <label><input type="checkbox" name="btn" value="no"> 取消</label>
-      <label><input type="checkbox" name="buttons" value="自定义1"> 自定义1</label>
-      <label><input type="checkbox" name="buttons" value="自定义2"> 自定义2</label>
-      <label><input type="checkbox" name="buttons" value="自定义3"> 自定义3</label>
-    </fieldset>
+  <div class="wrap">
+    <h2>示例</h2>
+    <form id="example" action="javascript://" method="get">
+      <fieldset>
+        <legend>按钮</legend>
+        <label><input type="checkbox" name="btn" value="ok"> 确认</label>
+        <label><input type="checkbox" name="btn" value="no"> 取消</label>
+        <label><input type="checkbox" name="buttons" value="自定义1"> 自定义1</label>
+        <label><input type="checkbox" name="buttons" value="自定义2"> 自定义2</label>
+        <label><input type="checkbox" name="buttons" value="自定义3"> 自定义3</label>
+      </fieldset>
 
-    <fieldset>
-      <legend>背景遮罩</legend>
-      <label><input type="radio" name="mask" value="" checked> 默认</label>
-      <label><input type="radio" name="mask" value="not_mask"> 透明</label>
-    </fieldset>
+      <fieldset>
+        <legend>背景遮罩</legend>
+        <label><input type="radio" name="mask" value="" checked> 默认</label>
+        <label><input type="radio" name="mask" value="not_mask"> 透明</label>
+      </fieldset>
 
-    <fieldset>
-      <legend>背景遮罩是否可关闭对话框</legend>
-      <label><input type="radio" name="maskClose" value="1" checked> 允许</label>
-      <label><input type="radio" name="maskClose" value="0"> 禁止</label>
-    </fieldset>
+      <fieldset>
+        <legend>背景遮罩是否可关闭对话框</legend>
+        <label><input type="radio" name="maskClose" value="1" checked> 允许</label>
+        <label><input type="radio" name="maskClose" value="0"> 禁止</label>
+      </fieldset>
 
-    <fieldset>
-      <legend>主题样式</legend>
-      <label><input type="radio" name="theme" value="" checked> 默认</label>
-      <label><input type="radio" name="theme" value="ios"> iOS</label>
-    </fieldset>
+      <fieldset>
+        <legend>主题样式</legend>
+        <label><input type="radio" name="theme" value="" checked> 默认</label>
+        <label><input type="radio" name="theme" value="ios"> iOS</label>
+      </fieldset>
 
-    <fieldset>
-      <legend>显示对话框</legend>
-      <button type="button" name="alert">模拟 alert</button>
-      <button type="button" name="confirm">模拟 confirm</button>
-      <button type="button" name="prompt">模拟 prompt</button>
-      <p id="result_confirm"></p>
-      <p id="result_prompt"></p>
-    </fieldset>
-  </form>
+      <fieldset>
+        <legend>显示对话框</legend>
+        <button type="button" name="alert">模拟 alert</button>
+        <button type="button" name="confirm">模拟 confirm</button>
+        <button type="button" name="prompt">模拟 prompt</button>
+        <p id="result_confirm"></p>
+        <p id="result_prompt"></p>
+      </fieldset>
+    </form>
 
-  <div id="prompt_box">
-    <label for="prompt_name">您正在使用的什么浏览器？</label>
-    <input id="prompt_name" type="text">
+    <div id="prompt_box">
+      <label for="prompt_name">您正在使用的什么浏览器？</label>
+      <input id="prompt_name" type="text">
+    </div>
+
+    <div class="about">
+      <section>
+        <h2>文档</h2>
+        <p><a target="_blank" href="https://github.com/ciaoca/cxDialog">Github</a></p>
+      </section>
+      <section>
+        <h2>作者</h2>
+        <p><a target="_blank" href="http://ciaoca.com/">Ciaoca</a></p>
+      </section>
+      <section>
+        <h2>协议</h2>
+        <p>Released under the MIT license</p>
+      </section>
+    </div>
   </div>
-
-  <div class="about">
-    <section>
-      <h2>文档</h2>
-      <p><a target="_blank" href="https://github.com/ciaoca/cxDialog">Github</a></p>
-    </section>
-    <section>
-      <h2>作者</h2>
-      <p><a target="_blank" href="http://ciaoca.com/">Ciaoca</a></p>
-    </section>
-    <section>
-      <h2>协议</h2>
-      <p>Released under the MIT license</p>
-    </section>
-  </div>
-</div>
 </div>
 
 <!-- <script src="//cdn.staticfile.org/jquery/1.9.0/jquery.min.js"></script> -->
