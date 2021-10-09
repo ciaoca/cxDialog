@@ -6,9 +6,7 @@ cxDialog 是基于 jQuery 的对话框插件，支持自定义外观样式，同
 * jQuery v1.9+ || Zepto 1.1+
 * cxDialog v1.3.0
 
-文档：http://code.ciaoca.com/jquery/cxDialog/
-
-示例：http://code.ciaoca.com/jquery/cxDialog/demo/
+Demo: https://ciaoca.github.io/cxDialog/
 
 ## 使用方法
 
