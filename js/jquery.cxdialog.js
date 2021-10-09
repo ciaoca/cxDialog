@@ -1,306 +1,264 @@
 /*!
- * jQuery cxDialog 1.2.4
- * http://code.ciaoca.com/
- * https://github.com/ciaoca/cxDialog
- * E-mail: ciaoca@gmail.com
- * Released under the MIT license
- * Date: 2017-01-06
+ * jQuery cxDialog
+ * 
+ * @version 1.3.0
+ * @author ciaoca@gmail.com
+ * @site https://github.com/ciaoca/cxDialog
+ * @license Released under the MIT license
+ * 
+ * @param {object|string|dom} options 参数设置 or 内容
+ * @param {string} [options.title] 标题
+ * @param {string|dom} [options.info] 内容
+ * @param {function} [options.ok] 确认按钮回调函数
+ * @param {string} [options.okText] 确认按钮文字
+ * @param {function} [options.no] 取消按钮回调函数
+ * @param {string} [options.noText] 取消按钮文字
+ * @param {array} [options.buttons] 自定义按钮 [{text: 'text', callback: function}, ..]
+ * @param {string} [options.buttons.text] 自定义按钮文字
+ * @param {function} [options.buttons.callback] 自定义按钮回调函数
+ * @param {string} [options.baseClass] 增加自定义 class，不会覆盖默认的 class
+ * @param {boolean} [options.maskClose] 背景遮罩是否可以关闭对话框
  *
- * 简易调用：$.cxDialog(string[, ok, no])
- * 完整方法：$.cxDialog(opt)
- * @param {object|string} opt 参数设置 or 内容
- *   title {string} 标题
- *   info {string|dom} 内容
- *   ok {fn} 点击确认时的回调函数
- *   okText {string} 确认按钮文字
- *   no {fn} 点击取消时的回调函数
- *   noText {string} 取消按钮文字
- *   buttons {array} 自定义按钮：[{text: 'text', callback: fn}, ...]
- *   closeBtn {boolean} 是否显示关闭按钮
- *   lockScroll {boolean} 是否锁定滚动
- *   baseClass {string} 给对话框容器增加 class，不会覆盖默认的 class
- *   background {string} 遮罩背景的颜色
- *   width {int} 提示框固定宽度
- *   height {int} 提示框固定高度
- *   zIndex {int} 提示框的层级
+ * @param {function} [ok] 等同于 options.ok
+ * @param {function} [no] 等同于 options.no
  *
- * @param {function} ok 点击确认时的回调函数
- * @param {function} no 点击取消时的回调函数
+ * @example
+ * $.cxDialog(string[, ok, no])
+ * $.cxDialog(options)
  */
-(function(factory){
+(function(factory) {
   if (typeof define === 'function' && define.amd) {
     define(['jquery'], factory);
   } else {
     factory(window.jQuery || window.Zepto || window.$);
   };
-}(function($){
-  if (typeof Zepto === 'function' || typeof Zepto === 'object') {
-    // Add inner and outer width to zepto (adapted from https://gist.github.com/alanhogan/3935463)
-    var ioDim = function(dimension, includeBorder) {
-      return function (includeMargin) {
-        var sides, size, elem;
-        if (this) {
-          elem = this;
-          size = elem[dimension]();
-          sides = {
-            width: ['left', 'right'],
-            height: ['top', 'bottom']
-          };
-          sides[dimension].forEach(function(side) {
-            if (!elem.css('box-sizing') || elem.css('box-sizing') === 'content-box') {
-              size += parseInt(elem.css('padding-' + side), 10);
-              if (includeBorder) {
-                size += parseInt(elem.css('border-' + side + '-width'), 10);
-              };
-            };
-            if (includeMargin) {
-              size += parseInt(elem.css('margin-' + side), 10);
-            };
-          });
-          return size;
-        } else {
-          return null;
-        };
-      };
-    };
-    ['width', 'height'].forEach(function(dimension) {
-      var Dimension = dimension.substr(0,1).toUpperCase() + dimension.substr(1);
-      if (typeof Zepto.fn['inner' + Dimension] === 'undefined') {
-        Zepto.fn['inner' + Dimension] = ioDim(dimension, false);
-      };
-      if (typeof Zepto.fn['outer' + Dimension] === 'undefined') {
-        Zepto.fn['outer' + Dimension] = ioDim(dimension, true);
-      };
-    });
-  };
-
+}(function($) {
   var dialog = {
     dom: {},
-    isElement: function(o){
+    isElement: function(o) {
       if (o && (typeof HTMLElement === 'function' || typeof HTMLElement === 'object') && o instanceof HTMLElement) {
         return true;
       } else {
         return (o && o.nodeType && o.nodeType === 1) ? true : false;
       };
     },
-    isJquery: function(o){
+    isJquery: function(o) {
       return (o && o.length && (typeof jQuery === 'function' || typeof jQuery === 'object') && o instanceof jQuery) ? true : false;
     },
-    isZepto: function(o){
+    isZepto: function(o) {
       return (o && o.length && (typeof Zepto === 'function' || typeof Zepto === 'object') && Zepto.zepto.isZ(o)) ? true : false;
     }
   };
 
-  dialog.init = function(opt, ok, no){
+  dialog.init = function() {
     var self = this;
 
-    self.dom.docHtml = $('html');
-    self.dom.box = $('<div></div>', {'id': 'cxdialog', 'class': 'cxdialog'});
-    self.dom.overlay = $('<div></div>', {'id': 'cxdialog_overlay', 'class': 'cxdialog_overlay'});
-    self.dom.holder = $('<div></div>', {'id': 'cxdialog_holder', 'class': 'cxdialog_holder'});
-    self.dom.title = $('<div></div>', {'class': 'cxdialog_title'});
-    self.dom.info = $('<div></div>', {'class': 'cxdialog_info'});
-    self.dom.btns = $('<div></div>', {'class': 'cxdialog_btns'});
-    self.dom.closeBtn = $('<a></a>', {'rel': 'cxdialog', 'rev': 'close'});
+    self.dom.wrap = $('<div></div>', {'id': 'cxdialog', 'class': 'cxdialog'});
+    self.dom.box = $('<div></div>', {'class': 'box'});
+    self.dom.mask = $('<div></div>', {'class': 'mask'});
+    self.dom.holder = $('<div></div>', {'class': 'cxdialog_holder'});
 
-    $(document).ready(function() {
-      self.dom.box.appendTo('body').after(self.dom.overlay);
+    self.dom.wrap.append(self.dom.mask).append(self.dom.box);
+
+    self.dom.mask.on('click', function() {
+      if (this.dataset.close) {
+        self.exit();
+      };
     });
 
-    self.isIE6 = !!window.ActiveXObject && !window.XMLHttpRequest;
-
-    self.dom.box.on('click', 'a', function(){
-      var _rel = this.rel;
-      var _rev = this.rev;
+    self.dom.wrap.on('click', 'a', function() {
+      var _this = this;
+      var _rel = _this.rel;
+      var _rev = _this.rev;
       var _result;
 
-      if (_rel !== 'cxdialog') {return};
+      if (_rel === 'cxdialog') {
+        event.preventDefault();
 
-      if (_rev === 'close') {
-        self.exit();
+        if (_rev === 'close') {
+          self.exit();
 
-      } else {
-        for (var i = 0, l = self.btnCache.length; i < l; i++) {
-          if (self.btnCache[i].name === _rev && typeof self.btnCache[i].callback === 'function') {
-            _result = self.btnCache[i].callback();
-            break;
+        } else if (Array.isArray(self.btnCache) && self.btnCache.length) {
+          for (var i = 0, l = self.btnCache.length; i < l; i++) {
+            if (self.btnCache[i].name === _rev && typeof self.btnCache[i].callback === 'function') {
+              _result = self.btnCache[i].callback();
+              break;
+            };
           };
         };
-      };
 
-      if (_result !== false) {
-        self.exit();
+        if (_result !== false) {
+          self.exit();
+        };
       };
+    });
 
-      return false;
+    document.addEventListener('DOMContentLoaded', function() {
+      self.dom.wrap.appendTo('body');
     });
   };
 
-  dialog.format = function(opt, ok, no){
+  // 配置参数
+  dialog.setOptions = function(options, ok, no) {
     var self = this;
-    self.exit();
 
-    if (typeof opt === 'string' && !opt.length) {return};
-
-    if (typeof opt === 'string' || self.isElement(opt) || self.isJquery(opt) || self.isZepto(opt)) {
-      opt = {
-        info: opt
+    if (typeof options === 'string' || self.isElement(options) || self.isJquery(options) || self.isZepto(options)) {
+      options = {
+        info: options
       };
-    } else if (typeof opt !== 'object') {
+
+    } else if (typeof options !== 'object') {
       return;
     };
 
-    if (typeof ok === 'function') {opt.ok = ok};
-    if (typeof no === 'function') {opt.no = no};
+    if (typeof ok === 'function') {
+      options.ok = ok;
+    };
 
-    opt = $.extend({}, $.cxDialog.defaults, opt);
+    if (typeof no === 'function') {
+      options.no = no;
+    };
 
-    self.dom.box.attr('class', 'cxdialog');
+    options = $.extend({}, $.cxDialog.defaults, options);
 
-    self.setContent(opt);
-    self.show(opt);
+    self.dom.wrap.attr('class', 'cxdialog');
+
+    self.setContent(options);
+    self.show(options);
   };
 
   // 设置内容
-  dialog.setContent = function(opt){
+  dialog.setContent = function(options) {
     var self = this;
-    var _timeStamp = new Date().getTime();
+    var html = '';
+    var nowtime = new Date().getTime();
 
     self.dom.box.empty();
 
-    // 设置标题
-    if (typeof opt.title === 'string' && opt.title.length) {
-      self.dom.title.html(opt.title).appendTo(self.dom.box);
+    if (options.maskClose) {
+      self.dom.mask.data('close', 1);
     };
 
-    self.infoCache = undefined;
+    // 标题
+    if (typeof options.title === 'string' && options.title.length) {
+      html += '<div class="title">' + options.title + '</div>';
+    };
 
-    // 设置文本内容
-    if (typeof opt.info === 'string' && opt.info.length) {
-      self.dom.info.html(opt.info).appendTo(self.dom.box);
+    self.backDom();
 
-    // 设置内容为 DOM 元素或 jQuery 对象
-    } else if (self.isElement(opt.info) || self.isJquery(opt.info) || self.isZepto(opt.info)) {
-      var _cacheDom = self.isElement(opt.info) ? $(opt.info) : opt.info;
+    // 内容为文本
+    if (typeof options.info === 'string' && options.info.length) {
+      html += '<div class="info">' + options.info + '</div>';
+
+    // 内容为 DOM 元素或 jQuery, Zepto 对象
+    } else if (self.isElement(options.info) || self.isJquery(options.info) || self.isZepto(options.info)) {
       self.infoCache = {
-        dom: _cacheDom
+        dom: self.isElement(options.info) ? $(options.info) : options.info
       };
 
-      var _style = _cacheDom.attr('style');
-
-      if (typeof _style === 'string' && _style.length) {
-        self.infoCache.styleText = _style;
-      };
+      var cssStyle = self.infoCache.dom.css(['display','visibility','position','float','flex','margin','padding','borderWidth']);
+      var inlineStyle = self.infoCache.dom.attr('style');
 
       self.dom.holder.css({
-        'float': _cacheDom.css('float'),
-        'display': _cacheDom.css('display'),
-        'visibility': _cacheDom.css('visibility'),
-        'position': _cacheDom.css('position'),
-        'width': _cacheDom.outerWidth(),
-        'height': _cacheDom.outerHeight()
-      }).insertAfter(_cacheDom);
+        'display': cssStyle.display,
+        'visibility': cssStyle.visibility,
+        'position': cssStyle.position,
+        'float': cssStyle.float,
+        'flex': cssStyle.flex,
+        'padding': cssStyle.padding,
+        'margin': cssStyle.margin,
+        'borderWidth': cssStyle.borderWidth,
+        'borderStyle': 'solid',
+        'borderColor': 'transparent',
+        'width': self.infoCache.dom.width(),
+        'height': self.infoCache.dom.height()
+      }).insertAfter(self.infoCache.dom);
 
-      _cacheDom.css('display', 'block').appendTo(self.dom.box);
+      if (typeof inlineStyle === 'string' && inlineStyle.length) {
+        self.infoCache.styleText = inlineStyle;
+      };
 
+      self.infoCache.dom.css('display', 'block').appendTo(self.dom.box);
+
+    // 其他内容强制转换为字符
     } else {
-      opt.info = String(opt.info);
-      self.dom.info.html(opt.info).appendTo(self.dom.box);
+      html += '<div class="info">' + String(options.info) + '</div>';
     };
 
     // 设置按钮
     self.btnCache = [];
 
-    if (typeof opt.ok === 'function') {
+    if (typeof options.ok === 'function') {
       self.btnCache.push({
         name: 'btn_ok',
         className: 'btn_ok',
-        text: opt.okText,
-        callback: opt.ok
-      });
-    };
-    if (typeof opt.no === 'function') {
-      self.btnCache.push({
-        name: 'btn_no',
-        className: 'btn_no',
-        text: opt.noText,
-        callback: opt.no
+        text: options.okText,
+        callback: options.ok
       });
     };
 
-    for (var i = 0, l = opt.buttons.length; i < l; i++) {
+    if (typeof options.no === 'function') {
       self.btnCache.push({
-        name: 'btn_' + _timeStamp + '_' + i,
+        name: 'btn_no',
+        className: 'btn_no',
+        text: options.noText,
+        callback: options.no
+      });
+    };
+
+    for (var i = 0, l = options.buttons.length; i < l; i++) {
+      self.btnCache.push({
+        name: 'btn_' + nowtime + '_' + i,
         className: 'btn_' + i,
-        text: opt.buttons[i].text,
-        callback: opt.buttons[i].callback
+        text: options.buttons[i].text,
+        callback: options.buttons[i].callback
       });
     };
 
     if (self.btnCache.length) {
-      var _html = '';
+      html += '<div class="btns">';
+
       for (var i = 0, l = self.btnCache.length; i < l; i++) {
-        _html += '<a class="' + self.btnCache[i].className + '" rel="cxdialog" rev="' + self.btnCache[i].name + '">' + self.btnCache[i].text + '</a>';
+        html += '<a class="' + self.btnCache[i].className + '" rel="cxdialog" rev="' + self.btnCache[i].name + '">' + self.btnCache[i].text + '</a>';
       };
-      self.dom.btns.html(_html).appendTo(self.dom.box);
+
+      html += '</div>';
     };
 
-    // 关闭按钮
-    if (opt.closeBtn) {
-      self.dom.closeBtn.appendTo(self.dom.box);
+    html += '<a class="close" rel="cxdialog" rev="close"></a>';
+
+    self.dom.box.html(html);
+
+    if (self.infoCache) {
+      self.dom.box.find('.btns').before(self.infoCache.dom);
     };
   };
 
   // 显示对话框
-  dialog.show = function(opt){
+  dialog.show = function(options) {
     var self = this;
 
-    if (opt.lockScroll === true) {
-      self.dom.docHtml.addClass('cxdialog_lock');
+    if (typeof options.baseClass === 'string' && options.baseClass.length) {
+      self.dom.wrap.addClass(options.baseClass);
     };
 
-    if (typeof opt.background === 'string') {
-      self.dom.overlay.css('background', opt.background);
-    } else {
-      self.dom.overlay.css('display', 'none');
-    };
+    self.dom.wrap.addClass('in');
+    document.body.classList.add('cxdialog_lock');
+  };
 
-    if (typeof opt.baseClass === 'string' && opt.baseClass.length) {
-      self.dom.box.addClass(opt.baseClass);
-    };
+  // 关闭对话框
+  dialog.exit = function() {
+    var self = this;
 
-    self.dom.box.removeAttr('style');
+    self.backDom();
+    self.btnCache = null;
 
-    var _cssAttr = {};
-
-    // IE6 不支持 fixed，设置当前位置
-    if (self.isIE6) {
-      _cssAttr.top = document.documentElement.scrollTop + window.screen.availHeight / 4;
-    };
-
-    if (opt.width > 0) {
-      _cssAttr.width = opt.width;
-      _cssAttr.marginLeft = -(opt.width / 2);
-    } else {
-      _cssAttr.marginLeft = -(self.dom.box.outerWidth() / 2);
-    };
-
-    if (opt.height > 0) {
-      _cssAttr.height = opt.height;
-      _cssAttr.marginTop = -(opt.height / 2);
-    } else {
-      _cssAttr.marginTop = -(self.dom.box.outerHeight() / 2);
-    };
-
-    if (opt.zIndex > 0) {
-      _cssAttr.zIndex = opt.zIndex;
-    };
-
-    self.dom.box.css(_cssAttr).addClass('in');
+    self.dom.wrap.removeClass('in').addClass('out');
+    document.body.classList.remove('cxdialog_lock');
   };
 
   // 归还加载的 DOM
-  dialog.backDom = function(){
+  dialog.backDom = function() {
     var self = this;
 
     if (self.infoCache && (self.isJquery(self.infoCache.dom) || self.isZepto(self.infoCache.dom))) {
@@ -311,33 +269,17 @@
       };
 
       self.infoCache.dom.insertAfter(self.dom.holder);
-
-      self.dom.holder.remove();
+      self.dom.holder.remove().removeAttr('style');
     };
 
-    self.infoCache = undefined;
+    self.infoCache = null;
   };
 
-  // 关闭对话框
-  dialog.exit = function(){
-    var self = this;
-
-    self.backDom();
-
-    self.btnCache = undefined;
-
-    self.dom.box.removeClass('in').addClass('out');
-    if (typeof $.cxDialog.defaults.background !== 'string') {
-      self.dom.overlay.css('display', '');
-    };
-    self.dom.docHtml.removeClass('cxdialog_lock');
+  $.cxDialog = function() {
+    dialog.setOptions.apply(dialog, arguments);
   };
 
-  $.cxDialog = function(){
-    dialog.format.apply(dialog, arguments);
-  };
-
-  $.cxDialog.close = function(){
+  $.cxDialog.close = function() {
     dialog.exit.apply(dialog);
   };
 
@@ -349,12 +291,8 @@
     no: null,
     noText: '取 消',
     buttons: [],
-    closeBtn: true,
-    lockScroll: false,
     baseClass: '',
-    background: '',
-    width: 0,
-    height: 0
+    maskClose: true,
   };
 
   dialog.init();

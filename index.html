@@ -3,138 +3,159 @@
 <head>
 <meta charset="utf-8">
 <title>cxDialog 对话框 &raquo; 在线演示 - 前端开发仓库</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <link rel="stylesheet" href="css/jquery.cxdialog.css">
 <style>
-body{background:#ddd;font:14px/1.7 tahoma,'\5fae\8f6f\96c5\9ed1',sans-serif;}
+body{background:#eee;font:14px/1.7 tahoma,'\5fae\8f6f\96c5\9ed1',sans-serif;}
 h1,h2,h3{font-size:36px;line-height:1;}
 h2{font-size:24px;}
 h3{font-size:18px;}
-fieldset{margin:2em 0;}
-fieldset legend{font-weight:bold;font-size:16px;line-height:2;}
-fieldset a{color:#06f;text-decoration:none;}
-fieldset a.n{color:#090;}
-fieldset a + a{margin-left:1em;}
+fieldset{margin:2em 0;border-color:#ccc;}
+fieldset legend{color:#888;font-size:1rem;line-height:2;}
 
-.wrap{width:800px;margin:0 auto;padding:20px 40px;border-radius:8px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,0.5);}
+.wrap{max-width:800px;margin:0 auto;padding:20px 40px;border-radius:5px;background-color:#fff;box-shadow:0 0 8px rgba(0,0,0,0.2);}
 
-#prompt_box{display:none;padding:10px;}
-#prompt_box label{display:block;margin-bottom:6px;}
+#prompt_box{display:none;margin:10px;padding:10px;border:2px solid #ccc;}
+#prompt_box label{display:block;margin-bottom:5px;}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>jQuery cxDialog 对话框</h1>
+  <h1>cxDialog 对话框</h1>
 
   <h2>示例</h2>
-  <div id="example">
+  <form id="example" action="javascript://" method="get">
     <fieldset>
-      <legend>模拟 alert</legend>
-      <button type="button" name="alert">显示对话框</button>
+      <legend>按钮</legend>
+      <label><input type="checkbox" name="btn" value="ok"> 确认</label>
+      <label><input type="checkbox" name="btn" value="no"> 取消</label>
+      <label><input type="checkbox" name="buttons" value="自定义1"> 自定义1</label>
+      <label><input type="checkbox" name="buttons" value="自定义2"> 自定义2</label>
+      <label><input type="checkbox" name="buttons" value="自定义3"> 自定义3</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>背景遮罩</legend>
+      <label><input type="radio" name="mask" value="" checked> 默认</label>
+      <label><input type="radio" name="mask" value="not_mask"> 透明</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>背景遮罩是否可关闭对话框</legend>
+      <label><input type="radio" name="maskClose" value="1" checked> 允许</label>
+      <label><input type="radio" name="maskClose" value="0"> 禁止</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>主题样式</legend>
+      <label><input type="radio" name="theme" value="" checked> 默认</label>
+      <label><input type="radio" name="theme" value="ios"> iOS</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>显示对话框</legend>
+      <button type="button" name="alert">模拟 alert</button>
       <button type="button" name="confirm">模拟 confirm</button>
       <button type="button" name="prompt">模拟 prompt</button>
       <p id="result_confirm"></p>
       <p id="result_prompt"></p>
     </fieldset>
-
-    <fieldset>
-      <legend>背景遮罩设置</legend>
-      <a class="n" href="javascript://" rel="background" rev="">不显示</a>
-      <a href="javascript://" rel="background" rev='#000'>黑色背景</a>
-      <a href="javascript://" rel="background" rev="#fff">白色背景</a>
-    </fieldset>
-
-    <fieldset>
-      <legend>主题样式</legend>
-      <a class="n" href="javascript://" rel="theme" rev="">默认</a>
-      <a href="javascript://" rel="theme" rev='ios'>iOS</a>
-      <a href="javascript://" rel="theme" rev="black">黑色</a>
-    </fieldset>
-  </div>
+  </form>
 
   <div id="prompt_box">
     <label for="prompt_name">您正在使用的什么浏览器？</label>
-    <input id="prompt_name" type="text" class="input" size="18">
+    <input id="prompt_name" type="text">
   </div>
 
   <a href="http://code.ciaoca.com/jquery/cxdialog/demo/">查看更多示例</a>
 
   <h2>文档</h2>
-  <ul>
-    <li><a target="_blank" href="https://github.com/ciaoca/cxDialog">Github</a></li>
-    <li><a target="_blank" href="http://code.ciaoca.com/jquery/cxDialog/">中文文档</a></li>
-  </ul>
+  <p><a target="_blank" href="https://github.com/ciaoca/cxDialog">Github</a></p>
   
   <h2>作者</h2>
-  <p><a target="_blank" href="http://ciaoca.com/">http://ciaoca.com/</a></p>
+  <p><a target="_blank" href="http://ciaoca.com/">Ciaoca</a></p>
+
+  <h2>协议</h2>
   <p>Released under the MIT license</p>
 </div>
 
-<script src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>
-<!-- <script src="http://cdn.staticfile.org/zepto/1.0/zepto.min.js"></script> -->
+<!-- <script src="http://cdn.staticfile.org/jquery/1.9.0/jquery.min.js"></script> -->
+<script src="http://cdn.staticfile.org/zepto/1.1.1/zepto.min.js"></script>
 <script src="js/jquery.cxdialog.js"></script>
 <script>
 (function() {
+  var form = $('#example');
   var promptName = document.getElementById('prompt_name');
 
-  $('#example').on('click', 'a', function() {
-    var _rel = this.rel;
-    var _rev = this.rev;
+  var setOptions = function() {
+    var data = form.serializeArray();
+    var opts = {
+      ok: null, 
+      no: null,
+      maskClose: true,
+      buttons: [],
+      baseClass: [],
+    }
 
-    if (_rel === 'background') {
-      $.cxDialog.defaults.background = _rev;
-      $(this).addClass('n').siblings('a').removeClass('n');
-      return false;
+    for (var i = 0, l = data.length; i < l; i++) {
+      if ((data[i].name === 'mask' || data[i].name === 'theme') && data[i].value) {
+        opts.baseClass.push(data[i].value);
 
-    } else if (_rel === 'theme') {
-      $.cxDialog.defaults.baseClass = _rev;
+      } else if (data[i].name === 'maskClose') {
+        if (data[i].value === '0') {
+          opts.maskClose = false;
+        };
 
-      if (_rev === 'ios') {
-        $.cxDialog.defaults.ok = function() {};
-      } else {
-        $.cxDialog.defaults.ok = undefined;
+      } else if (data[i].name === 'btn' && ['ok','no'].indexOf(data[i].value) >= 0) {
+        opts[data[i].value] = function() {};
+
+      } else if (data[i].name === 'buttons') {
+        opts.buttons.push({
+          text: data[i].value,
+          callback: function() {}
+        });
       };
-
-      $(this).addClass('n').siblings('a').removeClass('n');
     };
 
-  });
+    opts.baseClass = opts.baseClass.join(' ');
 
-  $('#example').on('click', 'button', function() {
-    var _name = this.name;
+    $.extend($.cxDialog.defaults, opts);
+  };
+
+  form.on('click', 'button', function() {
+    var _this = this;
+    var _name = _this.name;
+
+    setOptions();
 
     if (_name === 'alert') {
-      $.cxDialog('<p>Hello World!</p><p>I am cxDialog!</p>');
-      return false;
+      $.cxDialog('Hello World<br>I am cxDialog');
 
     } else if (_name === 'confirm') {
       $.cxDialog({
         title: 'cxDialog',
-        info: '现在开始使用 <strong>cxDialog</strong>！',
-        ok: function(){
+        info: '现在开始使用 <strong>cxDialog</strong>',
+        ok: function() {
           document.getElementById('result_confirm').innerHTML = '你选择了：<strong>确定</strong>';
         },
-        no: function(){
+        no: function() {
           document.getElementById('result_confirm').innerHTML = '你选择了：<strong>取消</strong>';
         }
       });
-      return false;
 
     } else if (_name === 'prompt') {
       $.cxDialog({
         title: 'cxDialog',
         info: document.getElementById('prompt_box'),
-        ok: function(){
+        ok: function() {
           if (promptName.value.length) {
-            document.getElementById('result_prompt').innerHTML = '您填写的是：' + promptName.value;
+            document.getElementById('result_prompt').innerHTML = '你填写的是：' + promptName.value;
             promptName.value = '';
           };
         },
-        no: function(){}
+        no: function() {}
       });
-
-      return false;
     };
-
   });
 })();
 </script>

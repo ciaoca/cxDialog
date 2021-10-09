@@ -1,100 +1,129 @@
 /**
  * cxDialog
  * ------------------------------ */
-.cxdialog{position:fixed;top:-100%;left:50%;overflow:hidden;min-width:240px;max-width:90%;margin:0;padding:0;border:none;border-radius:5px;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,0.6);color:#333;font-family:Arial,'\5fae\8f6f\96c5\9ed1',sans-serif;z-index:10002;}
-.cxdialog.in{top:40%;}
-.cxdialog > a[rev="close"]{position:absolute;top:0;right:0;width:30px;height:30px;color:#e9573f;font:bold 18px/30px Tahoma;text-align:center;text-decoration:none;cursor:pointer;}
-.cxdialog > a[rev="close"]:before{content:"×";}
-.cxdialog > a[rev="close"]:hover{color:#fc6e51;}
+.cxdialog{position:fixed;z-index:10001;top:-100%;bottom:100%;left:0;right:0;color:#333;font-size:14px;}
 
-.cxdialog_title{position:relative;background:#ddd;color:#333;font-weight:bold;font-size:14px;line-height:30px;text-indent:10px;}
-.cxdialog_info{overflow:hidden;position:relative;min-height:40px;padding:10px;font-size:14px;line-height:1.6;word-break:break-all;}
-.cxdialog_btns{overflow:hidden;position:relative;padding:10px;border-top:1px solid #ddd;font-weight:bold;font-size:14px;line-height:28px;text-align:right;}
-.cxdialog_btns a{display:inline-block;position:relative;padding:0 1em;border:none;border-radius:3px;background:#aaa;color:#fff;text-decoration:none;cursor:pointer;}
-.cxdialog_btns a:hover{background:#999;}
-.cxdialog_btns a + a{margin-left:10px;}
+.cxdialog .mask{position:absolute;top:0;bottom:0;left:0;right:0;background-color:rgba(0,0,0,0);cursor:default;
+transition-property:background-color;
+transition-duration:0.3s;
+}
 
-.cxdialog_overlay{overflow:hidden;position:fixed;top:-100%;left:0;width:100%;height:100%;z-index:10001;opacity:0.4;}
-.cxdialog.in + .cxdialog_overlay{top:0;}
+.cxdialog .box{position:absolute;top:40%;left:50%;min-width:240px;max-width:90%;border-radius:6px;background-color:#fff;box-shadow:0 1px 5px rgba(0,0,0,0.5);
+transform:translate(-50%, -50%);
+}
+.cxdialog .box > .close{position:absolute;top:0;right:0;overflow:hidden;width:40px;height:40px;color:#e9573f;font-weight:bold;font-size:18px;line-height:40px;text-align:center;text-decoration:none;cursor:pointer;
+transition-property:opacity;
+transition-duration:0.2s;
+}
+.cxdialog .box > .close:before{content:'+';display:block;
+transform:rotate(45deg);
+}
+.cxdialog .box > .close:hover{opacity:0.8;}
 
-.cxdialog_lock{overflow:hidden !important;width:auto;}
+.cxdialog .title{position:relative;border-radius:5px 5px 0 0;background-color:rgba(0,0,0,0.1);font-weight:bold;line-height:40px;text-indent:1em;}
+.cxdialog .info{overflow:hidden;position:relative;min-height:3em;padding:0.7em 1em;word-break:break-word;}
+.cxdialog .btns{overflow:hidden;position:relative;padding:0.7em 1em;border-top:1px solid #ddd;line-height:30px;
+display:flex;
+flex-wrap:wrap;
+justify-content:flex-end;
+}
+.cxdialog .btns a{position:relative;padding:0 1em;border:none;border-radius:3px;background-color:rgba(0,0,0,0.3);color:#fff;text-decoration:none;cursor:pointer;
+flex:none;
+transition-property:background-color;
+transition-duration:0.2s;
+}
+.cxdialog .btns a + a{margin-left:1em;}
+.cxdialog .btns a:hover{background-color:rgba(0,0,0,0.5);}
+
+
+@keyframes cxDialogIn{
+0%{top:45%;opacity:0;}
+100%{top:40%;opacity:1;}
+}
+
+@keyframes cxDialogOut{
+0%{top:40%;opacity:1;}
+100%{top:45%;opacity:0;}
+}
+
+/* 显示 */
+.cxdialog.in{top:0;bottom:0;}
+.cxdialog.in .mask{background-color:rgba(0,0,0,0.4);}
+.cxdialog.in .box{
+animation:cxDialogIn 0.3s both;
+}
+
+/* 隐藏 */
+.cxdialog.out{
+transition-property:top, bottom;
+transition-duration:0s;
+transition-delay:0.3s;
+}
+.cxdialog.out .box{
+animation:cxDialogOut 0.3s both;
+}
+
+body.cxdialog_lock{overflow:hidden;}
+
+.cxdialog.not_mask .mask{background:none;}
+
 
 /* iOS Theme */
-@-webkit-keyframes cxDialogIosIn{
-0%{top:35%;opacity:0;-webkit-transform:scale(1.1);}
-100%{top:35%;opacity:1;-webkit-transform:scale(1);}
+.cxdialog.ios .box{min-width:280px;border-radius:6px;background-color:#f9f9f9;box-shadow:none;}
+.cxdialog.ios .box > .close{display:none;}
+
+.cxdialog.ios .title{padding-top:12px;border-radius:0;background-color:transparent;font-size:16px;line-height:1.5;text-align:center;text-indent:0;}
+.cxdialog.ios .info{min-height:inherit;padding:10px;text-align:center;}
+.cxdialog.ios .title + .info{padding-top:4px;}
+
+.cxdialog.ios .btns{padding:0;border-top:1px solid #ddd;font-size:16px;line-height:44px;text-align:center;}
+.cxdialog.ios .btns a{margin:0;padding:0;border-radius:0;background-color:transparent;color:#007aff;cursor:pointer;
+flex:0 0 100%;
 }
+.cxdialog.ios .btns a + a{margin:0;border-top:1px solid #ddd;}
+.cxdialog.ios .btns a:last-child{border-radius:0 0 6px 6px;}
+.cxdialog.ios .btns a:only-child{border-radius:0 0 6px 6px !important;}
+.cxdialog.ios .btns a:hover{background-color:rgba(0,0,0,0.1);}
+
+.cxdialog.ios .btns a.btn_ok,
+.cxdialog.ios .btns a.btn_no{flex:1;border-top:none;}
+.cxdialog.ios .btns a.btn_ok{border-radius:0 0 0 6px;}
+.cxdialog.ios .btns a.btn_no{border-radius:0 0 6px 0;}
+.cxdialog.ios .btns a.btn_ok + a.btn_no:before{content:'';position:absolute;top:0;left:0;width:1px;height:100%;background-color:#ddd;}
+
 @keyframes cxDialogIosIn{
-0%{top:35%;opacity:0;transform:scale(1.1);}
-100%{top:35%;opacity:1;transform:scale(1);}
+0%{opacity:0;transform:translate(-50%, -50%) scale(1.1);}
+100%{opacity:1;transform:translate(-50%, -50%) scale(1);}
 }
 
-@-webkit-keyframes cxDialogIosOut{
-0%{top:35%;opacity:1;-webkit-transform:scale(1);}
-99%{top:35%;opacity:0;-webkit-transform:scale(0.9);}
-100%{top:-100%;opacity:0;}
-}
 @keyframes cxDialogIosOut{
-0%{top:35%;opacity:1;transform:scale(1);}
-99%{top:35%;opacity:0;transform:scale(0.9);}
-100%{top:-100%;opacity:0;}
+0%{opacity:1;transform:translate(-50%, -50%) scale(1) ;}
+99%{opacity:0;transform:translate(-50%, -50%) scale(0.9);}
+100%{opacity:0;}
 }
 
-.cxdialog.ios{min-width:270px;border-radius:6px;background:#f9f9f9;box-shadow:none;}
-.cxdialog.ios > a[rev="close"]{display:none;}
-.cxdialog.ios .cxdialog_title{padding:16px 10px 0 10px;background:none;font-size:16px;line-height:1.5;text-align:center;text-indent:0;}
-.cxdialog.ios .cxdialog_info{min-height:inherit;margin:0 0 10px 0;padding:10px 10px 0;font-size:14px;text-align:center;}
-.cxdialog.ios .cxdialog_title + .cxdialog_info{margin-top:2px;padding-top:0;}
-.cxdialog.ios .cxdialog_btns{overflow:hidden;margin:10px 0 0 0;padding:0;border-top:1px solid #ddd;font-size:16px;line-height:44px;text-align:center;}
-.cxdialog.ios .cxdialog_btns a{clear:both;display:block;margin:0;padding:0;border:none;border-radius:0;background:none;color:#007aff;cursor:pointer;}
-.cxdialog.ios .cxdialog_btns a:hover{background:#e9e9e9;}
-.cxdialog.ios .cxdialog_btns a.btn_ok,
-.cxdialog.ios .cxdialog_btns a.btn_no{clear:none;float:left;width:50%;border:none;}
-.cxdialog.ios .cxdialog_btns a.btn_ok{float:right;}
-.cxdialog.ios .cxdialog_btns a.btn_ok + a.btn_no:before{content:'';position:absolute;top:0;right:0;width:1px;height:100%;background:#d4d4d4;}
-.cxdialog.ios .cxdialog_btns a.btn_ok:only-child,
-.cxdialog.ios .cxdialog_btns a.btn_no:only-child{float:none;width:100%;}
-.cxdialog.ios .cxdialog_btns a + a{border-top:1px solid #d4d4d4;}
-.cxdialog.ios + .cxdialog_overlay{background:rgba(0,0,0,0.4);opacity:0;
-transition:top 0s, opacity 0.2s;
-}
-
-.cxdialog.ios.in{
--webkit-animation:cxDialogIosIn 0.2s both;
+.cxdialog.ios.in .box{
 animation:cxDialogIosIn 0.2s both;
 }
-.cxdialog.ios.out{
--webkit-animation:cxDialogIosOut 0.2s both;
+.cxdialog.ios.out .box{
 animation:cxDialogIosOut 0.2s both;
 }
-.cxdialog.ios.in + .cxdialog_overlay{top:0;opacity:1;}
-.cxdialog.ios.out + .cxdialog_overlay{
-transition:top 0s 0.2s, opacity 0.2s;
-}
 
-/* Black Theme */
-.cxdialog.black{background:#333;color:#fff;}
-.cxdialog.black > a[rev="close"]{color:#666;}
-.cxdialog.black > a[rev="close"]:hover{color:#333;}
-.cxdialog.black .cxdialog_title{border-bottom:1px solid #000;color:#333;
-background:rgba(194,194,194,1);
-background:-moz-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
-background:-webkit-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
-background:-o-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
-background:-ms-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
-background:linear-gradient(to bottom, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
+
+/* 深色模式 */
+@media (prefers-color-scheme: dark) {
+.cxdialog{color:#eee;}
+.cxdialog .box{background-color:#222;}
+.cxdialog .title{background-color:rgba(255,255,255,0.1);}
+.cxdialog .btns{border-top-color:#444;}
+.cxdialog .btns a{background-color:rgba(255,255,255,0.2);}
+.cxdialog .btns a:hover{background-color:rgba(255,255,255,0.3);}
+
+.cxdialog.ios{color:#eee;}
+.cxdialog.ios .box{background-color:#222;}
+.cxdialog.ios .btns{border-top-color:#444;}
+.cxdialog.ios .btns a{color:#4b8afe;}
+.cxdialog.ios .btns a + a{border-top-color:#444;}
+.cxdialog.ios .btns a:hover{background-color:rgba(255,255,255,0.1);}
+.cxdialog.ios .btns a.btn_ok + a.btn_no:before{background-color:#444;}
 }
-.cxdialog.black .cxdialog_title:before{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:#fff;}
-.cxdialog.black .cxdialog_title:after{content:'';position:absolute;bottom:-2px;left:0;width:100%;height:1px;background:#555;}
-.cxdialog.black .cxdialog_btns{border-top:1px solid #000;line-height:28px;text-align:left;}
-.cxdialog.black .cxdialog_btns:before{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:#555;}
-.cxdialog.black .cxdialog_btns a{border:1px solid #000;box-shadow:0 1px 0 #555;color:#333;
-background:rgba(194,194,194,1);
-background:-moz-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
-background:-webkit-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
-background:-o-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
-background:-ms-linear-gradient(top, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
-background:linear-gradient(to bottom, rgba(194,194,194,1) 0%, rgba(150,150,150,1) 100%);
-}
-.cxdialog.black .cxdialog_btns a:hover{background:#c2c2c2;}
-.cxdialog.black + .cxdialog_overlay{background:rgba(0,0,0,0.4);opacity:1;}
