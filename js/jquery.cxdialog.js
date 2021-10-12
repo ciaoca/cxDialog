@@ -2,29 +2,10 @@
  * jQuery cxDialog
  * 
  * @version 1.3.0
- * @author ciaoca@gmail.com
+ * @author ciaoca
+ * @email ciaoca@gmail.com
  * @site https://github.com/ciaoca/cxDialog
  * @license Released under the MIT license
- * 
- * @param {object|string|dom} options 参数设置 or 内容
- * @param {string} [options.title] 标题
- * @param {string|dom} [options.info] 内容
- * @param {function} [options.ok] 确认按钮回调函数
- * @param {string} [options.okText] 确认按钮文字
- * @param {function} [options.no] 取消按钮回调函数
- * @param {string} [options.noText] 取消按钮文字
- * @param {array} [options.buttons] 自定义按钮 [{text: 'text', callback: function}, ..]
- * @param {string} [options.buttons.text] 自定义按钮文字
- * @param {function} [options.buttons.callback] 自定义按钮回调函数
- * @param {string} [options.baseClass] 增加自定义 class，不会覆盖默认的 class
- * @param {boolean} [options.maskClose] 背景遮罩是否可以关闭对话框
- *
- * @param {function} [ok] 等同于 options.ok
- * @param {function} [no] 等同于 options.no
- *
- * @example
- * $.cxDialog(string[, ok, no])
- * $.cxDialog(options)
  */
 (function(factory) {
   if (typeof define === 'function' && define.amd) {
