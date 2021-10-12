@@ -13,10 +13,10 @@
     <h1>cxDialog 对话框</h1>
   </div>
 </header>
-
 <div class="main">
   <div class="wrap">
     <h2>示例</h2>
+
     <form id="example" action="javascript://" method="get">
       <fieldset>
         <legend>按钮</legend>
@@ -47,11 +47,15 @@
 
       <fieldset>
         <legend>显示对话框</legend>
-        <button type="button" name="alert">模拟 alert</button>
-        <button type="button" name="confirm">模拟 confirm</button>
-        <button type="button" name="prompt">模拟 prompt</button>
-        <p id="result_confirm"></p>
-        <p id="result_prompt"></p>
+        <section id="acts" class="acts">
+          <a href="javascript://" rel="alert">模拟 alert</a>
+          <a href="javascript://" rel="confirm">模拟 confirm</a>
+          <a href="javascript://" rel="prompt">模拟 prompt</a>
+        </section>
+        <section>
+          <p id="result_confirm"></p>
+          <p id="result_prompt"></p>
+        </section>
       </fieldset>
     </form>
 
@@ -120,16 +124,17 @@
     $.extend($.cxDialog.defaults, opts);
   };
 
-  form.on('click', 'button', function() {
+  $('#acts').on('click', 'a', function(){
+    event.preventDefault();
     var _this = this;
-    var _name = _this.name;
+    var _rel = _this.rel;
 
     setOptions();
 
-    if (_name === 'alert') {
+    if (_rel === 'alert') {
       $.cxDialog('Hello World<br>I am cxDialog');
 
-    } else if (_name === 'confirm') {
+    } else if (_rel === 'confirm') {
       $.cxDialog({
         title: 'cxDialog',
         info: '现在开始使用 <strong>cxDialog</strong>',
@@ -141,7 +146,7 @@
         }
       });
 
-    } else if (_name === 'prompt') {
+    } else if (_rel === 'prompt') {
       $.cxDialog({
         title: 'cxDialog',
         info: document.getElementById('prompt_box'),
