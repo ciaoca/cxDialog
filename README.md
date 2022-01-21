@@ -70,7 +70,7 @@ maskClose|true|背景遮罩是否可以关闭对话框
 text|按钮文字
 callback|回调函数
 
-### API 接口性
+## API 接口
 
 名称|说明
 ---|---
