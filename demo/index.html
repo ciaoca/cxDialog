@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>cxDialog 对话框 - 示例</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+<link rel="stylesheet" href="../dist/css/cxdialog.css">
+<link rel="stylesheet" href="./css/demo.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>cxDialog 对话框</h1>
+  </div>
+</header>
+<div class="main">
+  <div class="wrap">
+
+    <h2>示例</h2>
+
+    <fieldset>
+      <legend>常用</legend>
+      <section class="acts">
+        <a href="javascript://" rel="alert">提示</a>
+        <a href="javascript://" rel="ok">确认</a>
+        <a href="javascript://" rel="confirm">确认 + 取消</a>
+        <a href="javascript://" rel="article">超长内容</a>
+      </section>
+    </fieldset>
+
+    <fieldset>
+      <legend>引入表单</legend>
+      <section class="acts">
+        <a href="javascript://" rel="text">输入框</a>
+        <a href="javascript://" rel="radio">单选项</a>
+        <a href="javascript://" rel="checkbox">多选项</a>
+      </section>
+    </fieldset>
+
+    <form id="settings_form" action="javascript://" method="get">
+      <fieldset>
+        <legend>配置</legend>
+        <section>
+          <label>主题：</label>
+          <select name="theme">
+            <option value="">默认</option>
+            <option value="ios">iOS</option>
+          </select>
+        </section>
+        <section>
+          <label>标题栏：</label>
+          <select name="title">
+            <option value="">默认：无</option>
+            <option value="1">有</option>
+          </select>
+        </section>
+        <section>
+          <label>点击遮罩层：</label>
+          <select name="maskClose">
+            <option value="1">默认：关闭对话框</option>
+            <option value="">无动作（若同时未设置按钮，只能通过接口关闭）</option>
+          </select>
+        </section>
+        <section>
+          <label>表单来源：</label>
+          <select name="form">
+            <option value="page">页面表单</option>
+            <option value="js">JS表单</option>
+          </select>
+        </section>
+        <p>※ 打开控制台，输入 cxDialog.close() 可关闭对话。</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Log</legend>
+        <section id="result_log"></section>
+      </fieldset>
+    </form>
+
+    <form id="page_form" class="demo_form"></form>
+
+    <div class="about">
+      <section>
+        <h2>文档</h2>
+        <p><a target="_blank" href="https://github.com/ciaoca/cxDialog">Github</a></p>
+      </section>
+      <section>
+        <h2>作者</h2>
+        <p><a target="_blank" href="http://ciaoca.com/">Ciaoca</a></p>
+      </section>
+      <section>
+        <h2>协议</h2>
+        <p>Released under the MIT license</p>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script src="../dist/js/cxdialog.js"></script>
+<script>
+(function() {
+  const resultLog = document.getElementById('result_log');
+  const pageForm = document.getElementById('page_form');
+  const jsForm = document.createElement('form');
+  jsForm.classList.add('demo_form');
+  // jsForm.style.setProperty('width', '300px');
+  // jsForm.style.setProperty('margin', '10px');
+  // jsForm.style.setProperty('padding', '20px');
+  // jsForm.style.setProperty('border', '1px solid #000');
+
+  const formOptions = {
+    title: '您使用什么浏览器？',
+    info: pageForm,
+    ok: () => {
+      getFormValue();
+    }, 
+    no: () => {},
+    // baseClass: '',
+  };
+
+  document.getElementById('settings_form').addEventListener('change', (e) => {
+    const el = e.target;
+    const value = el.value;
+    const nodeName = el.nodeName.toLowerCase();
+
+    if (['input', 'select'].indexOf(nodeName) >= 0) {
+      switch (el.name) {
+        case 'theme':
+          cxDialog.defaults.baseClass = value;
+          break;
+
+        case 'title':
+          cxDialog.defaults.title = value == 1 ? 'cxDialog' : '';
+          break;
+
+        case 'maskClose':
+          cxDialog.defaults.maskClose = Boolean(parseInt(value, 10));
+          break;
+
+        case 'form':
+          formOptions.info = value === 'js' ? jsForm : pageForm;
+          break;
+      };
+    };
+  });
+
+  document.body.addEventListener('click', (e) => {
+    const el = e.target;
+    const nodeName = el.nodeName.toLowerCase();
+
+    if (nodeName === 'a' && el.rel) {
+      const rel = el.rel;
+
+      switch (rel) {
+        case 'alert':
+          cxDialog('Hello World<br>I am cxDialog');
+          break;
+
+        case 'ok':
+          cxDialog({
+            info: '现在开始使用 <strong>cxDialog</strong>',
+            ok: () => {
+              addLog('确定');
+            }
+          });
+          break;
+
+        case 'confirm':
+          cxDialog({
+            info: '现在开始使用 <strong>cxDialog</strong>',
+            ok: () => {
+              addLog('确定');
+            },
+            no: () => {
+              addLog('取消');
+            },
+          });
+          break;
+
+        case 'article':
+          const opts = {
+            info: Array(99).fill('文章内容'),
+            buttons: []
+          };
+
+          opts.info.unshift('<div style="width:9999px;background:linear-gradient(to right,rgba(0,0,0,1) 0%,rgba(0,0,0,0.1) 100%);color:#fff;">超宽内容</div>');
+          opts.info = opts.info.join('<br>');
+
+          for (let i = 0; i < 9; i++) {
+            opts.buttons.push({
+              text: '按钮' + i,
+              callback: () => {
+                addLog('按钮' + i)
+              }
+            });
+          };
+
+          cxDialog(opts);
+          break;
+
+        case 'text':
+          formOptions.info.innerHTML = '<div class="setvalue"><input name="name" type="text"></div>';
+          cxDialog(formOptions);
+          break;
+
+        case 'radio':
+          createOptions('radio');
+          cxDialog(formOptions);
+          break;
+
+        case 'checkbox':
+          createOptions('checkbox');
+          cxDialog(formOptions);
+          break;
+
+        case 'login':
+          cxDialog(formOptions);
+          break;
+      };
+    };
+  });
+
+  const createOptions = (type) => {
+    let now = new Date().getTime();
+    let html = '<div class="setvalue">';
+
+    for (let x of ['Chrome','Edge','Firefox']) {
+      let id = x.toLowerCase() + now;
+      html += '<input type="' + type + '" name="name" id="' + id + '" value="' + x + '"><label for="' + id + '">' + x + '</label>';
+    };
+
+    html += '</div>';
+
+    formOptions.info.innerHTML = html;
+  };
+
+  const getFormValue = () => {
+    const formData = new FormData(formOptions.info);
+    const values = [];
+
+    for (let x of formData.entries()) {
+      if (x[0] === 'name') {
+        values.push(x[1]);
+      };
+    };
+
+    addLog(values.join(','));
+  };
+
+  const addLog = (text) => {
+    resultLog.insertAdjacentHTML('beforeend', text + '<br>')
+  };
+})();
+</script>
+</body>
+</html>

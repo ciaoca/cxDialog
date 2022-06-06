@@ -1,77 +1,115 @@
 # cxDialog
 
-cxDialog 是基于 jQuery 的对话框插件，支持自定义外观样式，同时兼容 Zepto，方便在移动端使用。
-
-**版本：**
-* jQuery v1.9+ || Zepto 1.1+
-* cxDialog v1.3.0
+cxDialog 是基于 JavaScript 的对话框插件，支持自定义外观样式。
 
 Demo: https://ciaoca.github.io/cxDialog/
 
-## 使用方法
+>从 v2.0 开始，已移除 jQuery 的依赖，如果需要使用旧版，可查看 [v1 分支](https://github.com/ciaoca/cxDialog/tree/v1)。
 
-### 载入 CSS 文件
 
-```html
-<link rel="stylesheet" href="jquery.cxdialog.css">
-```
 
-### 载入 JavaScript 文件
+## 安装方法
+
+### 浏览器端引入
 
 ```html
-<script src="jquery.js"></script>
-<script src="jquery.cxdialog.js"></script>
+<link rel="stylesheet" href="cxdialog.css">
+<script src="cxdialog.js"></script>
 ```
 
-### 调用 cxDialog
+
+
+### 从 NPM 安装，作为模块引入
+
+```shell
+npm install cxdialog
+```
 
 ```javascript
-$.cxDialog('内容');
+import 'cxdialog.css';
+import cxDialog from 'cxdialog';
+```
 
-$.cxDialog('内容', function(){
+
+
+### 使用
+
+```javascript
+// 简易的方式
+cxDialog('内容');
+
+cxDialog('内容', () => {
   // click ok callback
-}, function(){
+}, () => {
   // click no callback
 });
 
-$.cxDialog({
+// 传入参数
+cxDialog({
   title: '标题',
   info: '内容',
-  ok: function(){
-    // code
-  },
-  no: function(){}
+  ok: () => {},
+  no: () => {}
 });
 ```
 
-### 设置全局默认值
+
+
+### 设置默认参数
 
 ``` javascript
-$.cxDialog.defaults.title = '提示';
+cxDialog.defaults.title = '提示';
 ```
 
+
+
 ## 参数说明
-名称|默认值|说明
+
+名称|类型|默认值|说明
+---|---|---|---
+title|string|''|标题
+info|string<br />element|''|内容，可设置为文本内容，或 DOM 元素
+ok|function|undefined|确认按钮回调函数<br />※ 值为 `function` 类型时，才会显示对应按钮
+no|function|undefined|取消按钮回调函数
+okText|string|'确 定'|确认按钮文字
+noText|string|'取 消'|取消按钮文字
+buttons|array|[]|自定义按钮
+baseClass|string|''|追加样式名称，不会覆盖默认的 class
+maskClose|boolean|true|是否允许点击遮罩层关闭对话框
+
+
+
+### buttons 参数
+
+```javascript
+cxDialog({
+  info: '内容',
+  buttons: [
+    {
+      text:'按钮1',
+      callback: () => {}
+    },
+    {
+      text:'按钮2',
+      callback: () => {}
+    }
+  ]
+});
+```
+
+名称|类型|说明
 ---|---|---
-title|''|标题
-info|''|内容，可设置为文本内容，或 DOM 元素
-ok|null|确认按钮回调函数
-okText|'确 定'|确认按钮文字
-no|null|取消按钮回调函数
-noText|'取 消'|取消按钮文字
-buttons|[]|自定义按钮
-baseClass|''|增加自定义 class，不会覆盖默认的 class
-maskClose|true|背景遮罩是否可以关闭对话框
+text|string|按钮文字
+callback|function|回调函数
 
-## buttons 参数
 
-名称|说明
----|---
-text|按钮文字
-callback|回调函数
 
 ## API 接口
 
+```javascript
+cxDialog.close();
+```
+
 名称|说明
 ---|---
-$.cxDialog.close()|关闭对话框
+close|关闭对话框
